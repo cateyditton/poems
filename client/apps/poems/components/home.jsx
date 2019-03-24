@@ -1,34 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql, compose } from 'react-apollo';
-import gql from 'graphql-tag';
-import assets from '../libs/assets';
+import PieChart from 'react-minimal-pie-chart';
+import _ from 'lodash';
 
-export class Home extends React.Component {
+export default class Home extends React.Component {
   static propTypes = {
     data: PropTypes.shape({
       welcomeMessage: PropTypes.string,
     })
   }
 
-  render() {
-    const img = assets('./images/atomicjolt.jpg');
+  buildSegments() {
+    return _.map(_.range(0, 9), () => ({
+      value: 1,
+      color: 'green'
+    }));
+  }
 
+  render() {
     return (
       <div>
-        <img src={img} alt="Atomic Jolt Logo" />
-        <p>{this.props.data.welcomeMessage} by <a href="http://www.atomicjolt.com">Atomic Jolt</a></p>
+        <p>Poems by Catelyn Schmidt</p>
+        <PieChart
+          data={this.buildSegments()}
+        />
       </div>
     );
   }
 }
-
-export default compose(
-  graphql(
-    gql`
-      query {
-        welcomeMessage @client
-      }
-    `
-  )
-)(Home);
